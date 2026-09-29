@@ -1,61 +1,38 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet, Image, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
 
 export default function HomeScreen() {
   return (
     <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
+      <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          
           <ThemedText type="title" style={styles.title}>
-           
+            Fitnes aplikacija
           </ThemedText>
-        </ThemedView>
+          <ThemedText type="subtitle" style={styles.subtitle}>
+            Tvoj osebni žepni trener
+          </ThemedText>
 
-        <ThemedText type="code" style={styles.code}>
-          jebi se
-        </ThemedText>
+          {/* Spletna slika z zagotovljenimi dimenzijami */}
+          <View style={styles.imageWrapper}>
+            <Image 
+              source={{ uri: 'https://picsum.photos/600/400' }} 
+              style={styles.heroImage} 
+            />
+          </View>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+          <ThemedView style={styles.card}>
+            <ThemedText type="defaultSemiBold" style={styles.cardTitle}>Zakaj izbrati Fitnes aplikacijo?</ThemedText>
+            <ThemedText style={styles.cardText}>
+              Ta aplikacija ti pomaga spremljati tvoje vadbe, načrtovati fitnes cilje in ostati v formi vsak dan. Preglej podrobnosti vadb na naslednji strani ali spoznaj avtorja!
+            </ThemedText>
+          </ThemedView>
 
-        {Platform.OS === 'web' && <WebBadge />}
+        </ScrollView>
       </SafeAreaView>
     </ThemedView>
   );
@@ -64,35 +41,48 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
   },
   safeArea: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
   },
-  heroSection: {
+  scrollContent: {
+    paddingHorizontal: 16,
+    paddingVertical: 20,
     alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+    gap: 16,
+    paddingBottom: 100,
   },
   title: {
     textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 28,
+    color: '#e74c3c',
   },
-  code: {
-    textTransform: 'uppercase',
+  subtitle: {
+    textAlign: 'center',
+    opacity: 0.8,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  imageWrapper: {
+    width: '100%',
+    height: 200,
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  heroImage: {
+    width: '100%',
+    height: '100%',
+  },
+  card: {
+    padding: 16,
+    borderRadius: 12,
+    gap: 8,
+    width: '100%',
+  },
+  cardTitle: {
+    fontSize: 18,
+  },
+  cardText: {
+    lineHeight: 22,
+    opacity: 0.9,
   },
 });
